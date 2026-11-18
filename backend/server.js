@@ -644,6 +644,25 @@ app.use((error, req, res, next) => {
 });
 
 // --------------------------------------------------
+// SERVE REACT FRONTEND IN PRODUCTION
+// --------------------------------------------------
+
+const frontendDist = path.join(
+  __dirname,
+  "../frontend/dist"
+);
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(frontendDist));
+
+  app.get("/{*path}", (req, res) => {
+    res.sendFile(
+      path.join(frontendDist, "index.html")
+    );
+  });
+}
+
+// --------------------------------------------------
 // START SERVER
 // --------------------------------------------------
 
